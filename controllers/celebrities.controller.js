@@ -18,10 +18,11 @@ module.exports.get = (req, res, next) => {
   const id = req.params.id;
 
   Celebrity.findById(id)
+    .populate('comments')
     .then(celebrity => {
       if (celebrity) {
         res.render('celebrities/detail', {
-          celebrity
+          celebrity,
         });
       } else {
         next(createError(404, `Celebrity with id ${id} not found`));

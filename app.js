@@ -8,6 +8,7 @@ require('./configs/db.config');
 require('./configs/hbs.config');
 
 const celebritiesRouter = require('./routes/celebrities.routes');
+const commentsRouter = require('./routes/comments.routes');
 
 const app = express();
 
@@ -27,6 +28,7 @@ app.use((req, res, next) => {
 });
 
 app.use('/celebrities', celebritiesRouter);
+app.use('/comments', commentsRouter);
 app.use('/', (req, res) => res.redirect('/celebrities'));
 
 // catch 404 and forward to error handler

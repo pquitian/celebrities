@@ -3,14 +3,11 @@ function renderFormErrors(errorsJSON) {
 
   Object.keys(errors).forEach((field => {
     let input = document.getElementById(field);
-    let error = document.createElement("div");
-
-    error.classList.add("invalid-feedback");
-    error.innerText = errors[field].message;
+    let msg = errors[field].message;
 
     input.classList.add("is-invalid");
 
-    input.parentNode.append(error);
+    toastr.error(msg);
   }));
 }
 
@@ -27,9 +24,25 @@ window.onload = function() {
     }
   });
 
-  document.querySelectorAll("form[data-errors]").forEach((element, a) => {
+  document.querySelectorAll("form[data-errors]").forEach((element) => {
     if (element.dataset.errors.length > 0) {
       renderFormErrors(element.dataset.errors);
     }
   });
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

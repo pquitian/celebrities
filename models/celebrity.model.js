@@ -12,5 +12,6 @@ module.exports = mongoose.model('Celebrity', new mongoose.Schema({
   },
   catchPhrase: {
     type: String
-  }
+  },
+  comments: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Comment' }]
 }));
