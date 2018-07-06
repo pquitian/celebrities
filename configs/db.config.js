@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const DB_NAME = 'celebrities';
-const MONGO_URI = `mongodb://localhost/${DB_NAME}`;
+const MONGO_URI = `mongodb://localhost:27017/${DB_NAME}`;
 
 mongoose.connect(MONGO_URI);
 mongoose.connection.on('connected', () => {

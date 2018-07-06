@@ -1,6 +1,7 @@
 const createError = require('http-errors');
 const mongoose = require('mongoose');
 const Celebrity = require('../models/celebrity.model');
+const Comment = require('../models/comment.model');
 
 module.exports.list = (req, res, next) => {
   Celebrity.find()
@@ -23,6 +24,7 @@ module.exports.get = (req, res, next) => {
       if (celebrity) {
         res.render('celebrities/detail', {
           celebrity,
+          comment: new Comment()
         });
       } else {
         next(createError(404, `Celebrity with id ${id} not found`));

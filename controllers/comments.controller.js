@@ -18,7 +18,7 @@ module.exports.doCreate = (req, res, next) => {
 
         comment.save()
           .then(() => {
-            celebrity.comments.push(comment)
+            celebrity.comments.push(comment);
 
             return celebrity.save();
           })
@@ -29,6 +29,7 @@ module.exports.doCreate = (req, res, next) => {
             if (error instanceof mongoose.Error.ValidationError) {
               res.render('celebrities/detail', { 
                 celebrity: celebrity,
+                comment: comment,
                 errors: error.errors
               });
             } else {

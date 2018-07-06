@@ -7,8 +7,10 @@ const logger = require('morgan');
 require('./configs/db.config');
 require('./configs/hbs.config');
 
+const usersRouter = require('./routes/users.routes');
 const celebritiesRouter = require('./routes/celebrities.routes');
 const commentsRouter = require('./routes/comments.routes');
+const sessionsRouter = require('./routes/sessions.routes');
 
 const app = express();
 
@@ -29,6 +31,8 @@ app.use((req, res, next) => {
 
 app.use('/celebrities', celebritiesRouter);
 app.use('/comments', commentsRouter);
+app.use('/users', usersRouter);
+app.use('/sessions', sessionsRouter);
 app.use('/', (req, res) => res.redirect('/celebrities'));
 
 // catch 404 and forward to error handler
