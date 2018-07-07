@@ -4,15 +4,17 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 
+const celebritiesRouter = require('./routes/celebrities.routes.js');
+const commentsRouter = require('./routes/comments.routes.js');
+const usersRouter = require('./routes/users.routes.js');
+const sessionsRouter = require('./routes/sessions.routes.js');
+
+const app = express();
+
 require('./configs/db.config');
 require('./configs/hbs.config');
 
-const usersRouter = require('./routes/users.routes');
-const celebritiesRouter = require('./routes/celebrities.routes');
-const commentsRouter = require('./routes/comments.routes');
-const sessionsRouter = require('./routes/sessions.routes');
-
-const app = express();
+require('./configs/session.config')(app);
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -24,16 +26,13 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use((req, res, next) => {
-  res.locals.path = req.path;
-  next();
-});
-
 app.use('/celebrities', celebritiesRouter);
 app.use('/comments', commentsRouter);
 app.use('/users', usersRouter);
 app.use('/sessions', sessionsRouter);
-app.use('/', (req, res) => res.redirect('/celebrities'));
+app.use('/', (req, res) => {
+  res.redirect('/celebrities')
+});
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {

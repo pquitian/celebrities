@@ -2,15 +2,48 @@ const express = require('express');
 const router = express.Router();
 const celebritiesController = require('../controllers/celebrities.controller');
 
-router.get('/create', celebritiesController.create);
-router.post('/create', celebritiesController.doCreate);
+const authMiddleware = require('../middlewares/auth.middleware.js')
 
-router.get('/', celebritiesController.list);
-router.get('/:id', celebritiesController.get);
+router.get(
+  '/create',
+  authMiddleware.authenticateUser,
+  celebritiesController.create
+);
 
-router.get('/:id/update', celebritiesController.update);
-router.post('/:id/update', celebritiesController.doUpdate);
+router.post(
+  '/create',
+  authMiddleware.authenticateUser,
+  celebritiesController.doCreate
+);
 
-router.post('/:id/delete', celebritiesController.delete);
+router.get(
+  '/',
+  authMiddleware.authenticateUser,
+  celebritiesController.list
+);
+
+router.get(
+  '/:id',
+  authMiddleware.authenticateUser,
+  celebritiesController.get
+);
+
+router.get(
+  '/:id/update',
+  authMiddleware.authenticateUser,
+  celebritiesController.update
+);
+
+router.post(
+  '/:id/update',
+  authMiddleware.authenticateUser,
+  celebritiesController.doUpdate
+);
+
+router.post(
+  '/:id/delete',
+  authMiddleware.authenticateUser,
+  celebritiesController.delete
+);
 
 module.exports = router;

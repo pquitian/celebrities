@@ -12,15 +12,6 @@ module.exports.doCreate = (req, res, next) => {
   const email = req.body.email;
   const password = req.body.password;
 
-  function doesNotExist(res) {
-    res.render("sessions/create", {
-      user: new User(req.body),
-      errors: {
-        "email": "Does not exist"
-      }
-    })
-  }
-
   if (!email || !password) {
     res.render("sessions/create", {
       user: new User(req.body),
@@ -36,16 +27,33 @@ module.exports.doCreate = (req, res, next) => {
           user.checkPassword(password)
             .then((match) => {
               if (match) {
-                res.send("OH YEAH!")
+                req.session.currentUser = user;
+                res.redirect("/");
               } else {
-                doesNotExist(res);
+                res.render("sessions/create", {
+                  user: new User(req.body),
+                  errors: {
+                    "password": "Wrong password"
+                  }
+                })
               }
             })
             .catch(error => next(error));
         } else {
-          doesNotExist(res);
+          res.render("sessions/create", {
+            user: new User(req.body),
+            errors: {
+              "email": "Does not exist"
+            }
+          })
         }
       })
       .catch(error => next(error))
   }
+}
+
+module.exports.delete = (req, res, next) => {
+  req.session.destroy(() => {
+    res.redirect("/sessions/create");
+  });
 }
