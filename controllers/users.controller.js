@@ -11,6 +11,8 @@ module.exports.create = (req, res, next) => {
 module.exports.doCreate = (req, res, next) => {
   const newUser = new User(req.body);
 
+  console.log(`REQ BODY: ${JSON.stringify(req.body)}`);
+
   User.findOne({ email: newUser.email })
     .then((user) => {
       if (user) {
