@@ -15,22 +15,19 @@ const userSchema = new mongoose.Schema({
 });
 
 userSchema.pre('save', function(next) {
-  console.log(`Doing presave......`);
-
   if (!this.isModified('password')) return next();
-
-  console.log(`current password: ${this.password}`);
 
   bcrypt.genSalt(saltRounds)
     .then((saltValue) => {
-      return bcrypt.hash(this.password, salt)
-    })
-    .then((hash) => {
-      console.log(`hash returned by promise: ${hash}`);
-      this.password = hash;
-
-      console.log(`password after hash: ${this.password}`);
-      next();
+      bcrypt.hash(this.password, saltValue)
+        .then((hash) => {
+          this.password = hash;
+          next();
+        })
+        .catch((error) => {
+          this.password = null;
+          next();
+        })
     })
     .catch((error) => {
       this.password = null;
