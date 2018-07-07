@@ -19,15 +19,11 @@ userSchema.pre('save', function(next) {
 
   bcrypt.genSalt(saltRounds)
     .then((saltValue) => {
-      bcrypt.hash(this.password, saltValue)
-        .then((hash) => {
-          this.password = hash;
-          next();
-        })
-        .catch((error) => {
-          this.password = null;
-          next();
-        })
+      return bcrypt.hash(this.password, saltValue)
+    })
+    .then((hash) => {
+      this.password = hash;
+      next();
     })
     .catch((error) => {
       this.password = null;
